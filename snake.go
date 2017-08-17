@@ -3,14 +3,21 @@ package main
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
-	"github.com/faiface/pixel/imdraw"
+	//"github.com/faiface/pixel/imdraw"
 	"golang.org/x/image/colornames"
+	"github.com/cdalizadeh/snake/field"
+	//"fmt"
+	//"reflect"
 )
 
 func run() {
+	var width int = 800
+	var cols int = 20
+	var colWidth int = int(float64(width) / float64(cols))
+	
 	cfg := pixelgl.WindowConfig{
 		Title:  "Snake",
-		Bounds: pixel.R(0, 0, 800, 800),
+		Bounds: pixel.R(0, 0, float64(width), float64(width)),
 		VSync:  true,
 	}
 	win, err := pixelgl.NewWindow(cfg)
@@ -18,25 +25,14 @@ func run() {
 		panic(err)
 	}
 
-	imd := imdraw.New(nil)
-
-	imd.Color = pixel.RGB(1, 0, 0)
-	imd.Push(pixel.V(200, 100))
-	imd.Color = pixel.RGB(0, 1, 0)
-	imd.Push(pixel.V(800, 100))
-	imd.Color = pixel.RGB(0, 0, 1)
-	imd.Push(pixel.V(500, 700))
-	imd.Polygon(0)
+	field := field.Create(width, cols, colWidth)
 
 	for !win.Closed() {
 		win.Clear(colornames.Aliceblue)
-		imd.Draw(win)
+		field.Draw(win)
 		win.Update()
 	}
 
-	for !win.Closed() {
-		win.Update()
-	}
 }
 
 func main() {
