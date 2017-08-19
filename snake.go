@@ -3,8 +3,11 @@ package main
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	//"github.com/faiface/pixel/imdraw"
 	"github.com/cdalizadeh/snake/field"
 	"github.com/cdalizadeh/snake/body"
+	//"github.com/cdalizadeh/snake/cell"
+	//"fmt"
 )
 
 func main() {
@@ -12,7 +15,7 @@ func main() {
 }
 
 func run() {
-	var width int = 800
+	var width int = 900
 	var cols int = 10
 	var colWidth int = int(float64(width) / float64(cols))
 	bColor := pixel.RGB(0, 0, 0)
@@ -31,27 +34,28 @@ func run() {
 
 	win.Clear(bColor)
 	fieldImd := field.Create(width, cols, colWidth)
-	bodyImd := body.Create(colWidth)
+	body.Init(cols, colWidth)
+	snakeBody := body.Create()
 	for !win.Closed() {
 		timer--
 		if timer <= 0 {
 			timer = timerConstant
-			body.Move()
+			snakeBody.Move()
 		}
 		if win.JustPressed(pixelgl.KeyLeft) {
-			body.SetDir(2)
+			snakeBody.SetDir(2)
 		}
 		if win.JustPressed(pixelgl.KeyRight) {
-			body.SetDir(0)
+			snakeBody.SetDir(0)
 		}
 		if win.JustPressed(pixelgl.KeyDown) {
-			body.SetDir(3)
+			snakeBody.SetDir(3)
 		}
 		if win.JustPressed(pixelgl.KeyUp) {
-			body.SetDir(1)
+			snakeBody.SetDir(1)
 		}
 		win.Clear(bColor)
-		bodyImd.Draw(win)
+		snakeBody.Imd.Draw(win)
 		fieldImd.Draw(win)
 		win.Update()
 	}
