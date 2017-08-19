@@ -13,6 +13,7 @@ var cols int
 
 type Body struct {
     s []cell.Cell
+	head cell.Cell
 	direction int
 	nextDir int
 	Imd *imdraw.IMDraw
@@ -35,20 +36,21 @@ func (b *Body) SetDir(dir int) {
 }
 
 func (b *Body) ChangePos(){
-
-	if b.direction == 0 {
+	if b.addCell {
+		b.addCell = false
+	} else {
 		b.s = b.s[1:]
-		b.s = append(b.s, cell.Create(b.s[len(b.s) - 1].Xpos + 1, b.s[len(b.s) - 1].Ypos))
-	} else if b.direction == 1 {
-		b.s = b.s[1:]
-		b.s = append(b.s, cell.Create(b.s[len(b.s) - 1].Xpos, b.s[len(b.s) - 1].Ypos + 1))
-	} else if b.direction == 2 {
-		b.s = b.s[1:]
-		b.s = append(b.s, cell.Create(b.s[len(b.s) - 1].Xpos - 1, b.s[len(b.s) - 1].Ypos))
-	} else if b.direction == 3 {
-		b.s = b.s[1:]
-		b.s = append(b.s, cell.Create(b.s[len(b.s) - 1].Xpos, b.s[len(b.s) - 1].Ypos - 1))
 	}
+	if b.direction == 0 {
+		b.head = cell.Create(b.head.Xpos + 1, b.head.Ypos)
+	} else if b.direction == 1 {
+		b.head = cell.Create(b.head.Xpos, b.head.Ypos + 1)
+	} else if b.direction == 2 {
+		b.head = cell.Create(b.head.Xpos - 1, b.head.Ypos)
+	} else if b.direction == 3 {
+		b.head = cell.Create(b.head.Xpos, b.head.Ypos - 1)
+	}
+	b.s = append(b.s, b.head)
 }
 
 func (b *Body) Move(){
@@ -58,19 +60,45 @@ func (b *Body) Move(){
 	b.Redraw()
 }
 
+func (b *Body) GetHead() (int, int) {
+	return b.head.Xpos, b.head.Ypos
+}
+
 func (b *Body) Check() {
-	/*if b.s[0].Xpos < 0 {
-		b.s[0].Xpos = 0
+	for i:= 0; i < len(b.s) - 1; i++ {
+		if b.head.Xpos == b.s[i].Xpos && b.head.Ypos == b.s[i].Ypos {
+			kill()
+		}
 	}
-	if b.s[0].Ypos < 0 {
-		b.s[0].Ypos = 0
+	if b.head.Xpos < 0 {
+		kill()
 	}
-	if b.s[0].Xpos > 9 {
-		b.s[0].Xpos = 9
+	if b.head.Ypos < 0 {
+		kill()
 	}
-	if b.s[0].Ypos > 9 {
-		b.s[0].Ypos = 9
-	}*/
+	if b.head.Xpos > cols - 1 {
+		kill()
+	}
+	if b.head.Ypos > cols - 1 {
+		kill()
+	}
+}
+
+func (b *Body) Eat() {
+	b.addCell = true
+}
+
+func (b *Body) IsWithinBody(x int, y int) bool{
+	for i := 0; i < len(b.s); i++ {
+		if x == b.s[i].Xpos && y == b.s[i].Ypos {
+			return true
+		}
+	}
+	return false
+}
+
+func kill(){
+	panic(6)
 }
 
 func Init(numCols int, width int) {
@@ -87,9 +115,7 @@ func Create() Body {
 	b.addCell = false
 	cell.Init(colWidth, b.Imd)
 	b.s[0] = cell.Create(0, 0)
-	for i := 1; i < 4; i++ {
-		b.s = append(b.s, cell.Create(i, 0))
-	}
+	b.head = b.s[0]
 	b.Redraw()
 	return b
 }
