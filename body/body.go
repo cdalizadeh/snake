@@ -5,10 +5,9 @@ import (
 	"github.com/faiface/pixel/imdraw"
 	"github.com/cdalizadeh/snake/cell"
 	"math"
-	//"fmt"
 )
 
-var colWidth int
+var colWidth float64
 var cols int
 
 type Body struct {
@@ -54,11 +53,11 @@ func (b *Body) ChangePos(){
 	b.s = append(b.s, b.head)
 }
 
-func (b *Body) Move(){
+func (b *Body) Move() {
 	b.direction = b.nextDir
 	b.ChangePos()
-	b.Check()
 	b.Draw()
+	b.Check()
 }
 
 func (b *Body) GetHead() (int, int) {
@@ -102,7 +101,7 @@ func kill(){
 	panic(6)
 }
 
-func Init(numCols int, width int) {
+func Init(numCols int, width float64) {
 	colWidth = width
 	cols = numCols
 }

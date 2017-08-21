@@ -3,10 +3,9 @@ package cell
 import (
 	"github.com/faiface/pixel/imdraw"
     "github.com/faiface/pixel"
-	//"fmt"
 )
 
-var colWidth int
+var colWidth float64
 var imd *imdraw.IMDraw
 
 type Cell struct {
@@ -15,11 +14,11 @@ type Cell struct {
 }
 
 func (c *Cell) Draw() {
-	imd.Push(pixel.V(float64(c.Xpos * colWidth), float64(c.Ypos * colWidth)), pixel.V(float64((c.Xpos + 1) * colWidth), float64((c.Ypos + 1) * colWidth)))
+	imd.Push(pixel.V(float64(c.Xpos) * colWidth, float64(c.Ypos) * colWidth), pixel.V(float64(c.Xpos + 1) * colWidth, float64(c.Ypos + 1) * colWidth))
 	imd.Rectangle(0)
 }
 
-func Init(wid int, bodyImd *imdraw.IMDraw) {
+func Init(wid float64, bodyImd *imdraw.IMDraw) {
     colWidth = wid
     imd = bodyImd
 }

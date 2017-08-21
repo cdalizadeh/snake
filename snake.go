@@ -12,23 +12,23 @@ import (
 	"fmt"
 )
 
+var width float64 = 800
+var cols int = 10
+var colWidth float64 = width / float64(cols)
+var backColor pixel.RGBA = pixel.RGB(0, 0, 0)
+var lineColor pixel.RGBA = pixel.RGB(0, 1, 0)
+var bodyColor pixel.RGBA = pixel.RGB(1, 1, 1)
+var foodColor pixel.RGBA = pixel.RGB(0, 1, 1)
+var timerConstant int = 11
+
 func main() {
 	pixelgl.Run(run)
 }
 
 func run() {
-	width := 800
-	cols := 10
-	colWidth := int(float64(width) / float64(cols))
-	backColor := pixel.RGB(0, 0, 0)
-	lineColor := pixel.RGB(0, 1, 0)
-	bodyColor := pixel.RGB(1, 1, 1)
-	foodColor := pixel.RGB(0, 1, 1)
-	timerConstant := 11
-	
 	cfg := pixelgl.WindowConfig{
 		Title:  "Snake",
-		Bounds: pixel.R(0, 0, float64(width), float64(width)),
+		Bounds: pixel.R(0, 0, width, width),
 		VSync:  true,
 	}
 	win, err := pixelgl.NewWindow(cfg)
@@ -37,7 +37,7 @@ func run() {
 	}
 
 	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
-	basicTxt := text.New(pixel.V(100, float64(width) / 2), basicAtlas)
+	basicTxt := text.New(pixel.V(100, width / 2), basicAtlas)
 	fmt.Fprintln(basicTxt, "PAUSE")
 	
 	body.Init(cols, colWidth)

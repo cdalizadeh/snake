@@ -3,10 +3,9 @@ package food
 import (
 	"github.com/faiface/pixel/imdraw"
     "github.com/faiface/pixel"
-	//"fmt"
 )
 
-var colWidth int
+var colWidth float64
 
 type Food struct {
     Xpos int
@@ -19,7 +18,7 @@ func (f *Food) Draw() {
 	f.Imd.Reset()
 	f.Imd.Clear()
 	f.Imd.Color = f.color
-	f.Imd.Push(pixel.V(float64(f.Xpos * colWidth), float64(f.Ypos * colWidth)), pixel.V(float64((f.Xpos + 1) * colWidth), float64((f.Ypos + 1) * colWidth)))
+	f.Imd.Push(pixel.V(float64(float64(f.Xpos) * colWidth), float64(float64(f.Ypos) * colWidth)), pixel.V(float64((float64(f.Xpos) + 1) * colWidth), float64((float64(f.Ypos) + 1) * colWidth)))
 	f.Imd.Rectangle(0)
 }
 
@@ -29,7 +28,7 @@ func (f *Food) Set(x int, y int) {
 	f.Draw()
 }
 
-func Init(wid int) {
+func Init(wid float64) {
     colWidth = wid
 }
 
