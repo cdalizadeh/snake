@@ -3,12 +3,13 @@ package main
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
-	//"github.com/faiface/pixel/imdraw"
+	"github.com/faiface/pixel/text"
+	"golang.org/x/image/font/basicfont"
 	"github.com/cdalizadeh/snake/field"
 	"github.com/cdalizadeh/snake/body"
 	"github.com/cdalizadeh/snake/food"
 	"math/rand"
-	//"fmt"
+	"fmt"
 )
 
 func main() {
@@ -35,6 +36,10 @@ func run() {
 		panic(err)
 	}
 
+	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	basicTxt := text.New(pixel.V(100, float64(width) / 2), basicAtlas)
+	fmt.Fprintln(basicTxt, "PAUSE")
+	
 	body.Init(cols, colWidth)
 	food.Init(colWidth)
 	snakeBody := body.Create(0, 0, 0, bodyColor)
@@ -73,9 +78,26 @@ func run() {
 		}
 		if win.JustPressed(pixelgl.KeyP) {
 			win.Update()
+			win.Clear(backColor)
+			snakeFood.Imd.SetColorMask(pixel.RGB(0.5, 0.5, 0.5))
+			snakeBody.Imd.SetColorMask(pixel.RGB(0.5, 0.5, 0.5))
+			snakeField.Imd.SetColorMask(pixel.RGB(0.5, 0.5, 0.5))
+			snakeFood.Draw()
+			snakeBody.Draw()
+			snakeField.Draw()
+			snakeFood.Imd.Draw(win)
+			snakeBody.Imd.Draw(win)
+			snakeField.Imd.Draw(win)
+			basicTxt.Draw(win, pixel.IM.Scaled(basicTxt.Orig, 9))
 			for !win.JustPressed(pixelgl.KeyP) && !win.Closed() {
 				win.Update()
 			}
+			snakeFood.Imd.SetColorMask(pixel.RGB(1, 1, 1))
+			snakeBody.Imd.SetColorMask(pixel.RGB(1, 1, 1))
+			snakeField.Imd.SetColorMask(pixel.RGB(1, 1, 1))
+			snakeFood.Draw()
+			snakeBody.Draw()
+			snakeField.Draw()
 		}
 		win.Clear(backColor)
 		snakeFood.Imd.Draw(win)

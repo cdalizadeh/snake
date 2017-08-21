@@ -21,7 +21,7 @@ type Body struct {
 	color pixel.RGBA
 }
 
-func (b *Body) Redraw() {
+func (b *Body) Draw() {
 	b.Imd.Reset()
 	b.Imd.Clear()
 	b.Imd.Color = b.color
@@ -58,7 +58,7 @@ func (b *Body) Move(){
 	b.direction = b.nextDir
 	b.ChangePos()
 	b.Check()
-	b.Redraw()
+	b.Draw()
 }
 
 func (b *Body) GetHead() (int, int) {
@@ -118,6 +118,6 @@ func Create(x int, y int, dir int, color pixel.RGBA) Body {
 	cell.Init(colWidth, b.Imd)
 	b.s[0] = cell.Create(0, 0)
 	b.head = b.s[0]
-	b.Redraw()
+	b.Draw()
 	return b
 }
