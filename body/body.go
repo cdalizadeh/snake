@@ -18,12 +18,13 @@ type Body struct {
 	nextDir int
 	Imd *imdraw.IMDraw
 	addCell bool
+	color pixel.RGBA
 }
 
 func (b *Body) Redraw() {
 	b.Imd.Reset()
 	b.Imd.Clear()
-	b.Imd.Color = pixel.RGB(1, 1, 1)
+	b.Imd.Color = b.color
 	for i := 0; i < len(b.s); i++ {
 		b.s[i].Draw()
 	}
@@ -106,13 +107,14 @@ func Init(numCols int, width int) {
 	cols = numCols
 }
 
-func Create() Body {
+func Create(x int, y int, dir int, color pixel.RGBA) Body {
 	b := Body{}
 	b.s = make([]cell.Cell, 1, cols * cols)
 	b.Imd = imdraw.New(nil)
 	b.direction = 0
 	b.nextDir = 0
 	b.addCell = false
+	b.color = color
 	cell.Init(colWidth, b.Imd)
 	b.s[0] = cell.Create(0, 0)
 	b.head = b.s[0]

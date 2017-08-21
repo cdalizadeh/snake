@@ -16,12 +16,14 @@ func main() {
 }
 
 func run() {
-	var width int = 800
-	var cols int = 10
-	var colWidth int = int(float64(width) / float64(cols))
-	bColor := pixel.RGB(0, 0, 0)
-	var timerConstant int = 8
-	var timer int = timerConstant
+	width := 800
+	cols := 10
+	colWidth := int(float64(width) / float64(cols))
+	backColor := pixel.RGB(0, 0, 0)
+	lineColor := pixel.RGB(0, 1, 0)
+	bodyColor := pixel.RGB(1, 1, 1)
+	foodColor := pixel.RGB(0, 1, 1)
+	timerConstant := 11
 	
 	cfg := pixelgl.WindowConfig{
 		Title:  "Snake",
@@ -32,12 +34,14 @@ func run() {
 	if err != nil {
 		panic(err)
 	}
+
 	body.Init(cols, colWidth)
 	food.Init(colWidth)
-	snakeBody := body.Create()
-	snakeFood := food.Create(rand.Intn(cols), rand.Intn(cols))
-	snakeField := field.Create(width, cols, colWidth)
+	snakeBody := body.Create(0, 0, 0, bodyColor)
+	snakeFood := food.Create(rand.Intn(cols), rand.Intn(cols), foodColor)
+	snakeField := field.Create(width, cols, colWidth, lineColor)
 
+	timer := timerConstant
 	for !win.Closed() {
 		timer--
 		if timer <= 0 {
@@ -67,7 +71,13 @@ func run() {
 		if win.JustPressed(pixelgl.KeyUp) {
 			snakeBody.SetDir(1)
 		}
-		win.Clear(bColor)
+		if win.JustPressed(pixelgl.KeyP) {
+			win.Update()
+			for !win.JustPressed(pixelgl.KeyP) && !win.Closed() {
+				win.Update()
+			}
+		}
+		win.Clear(backColor)
 		snakeFood.Imd.Draw(win)
 		snakeBody.Imd.Draw(win)
 		snakeField.Imd.Draw(win)
