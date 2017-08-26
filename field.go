@@ -1,4 +1,4 @@
-package field
+package main
 
 import (
 	"github.com/faiface/pixel"
@@ -27,7 +27,7 @@ func (f *Field) Draw() {
 	}
 }
 
-func Create(width float64, cols int, colWidth float64, color pixel.RGBA) Field {
+func createField(width float64, cols int, colWidth float64, color pixel.RGBA) Field {
 	f := Field{}
 	f.width = width
 	f.cols = cols

@@ -5,9 +5,8 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/font/basicfont"
-	"github.com/cdalizadeh/snake/field"
 	"github.com/cdalizadeh/snake/body"
-	"github.com/cdalizadeh/snake/food"
+	"math"
 	"math/rand"
 	"fmt"
 )
@@ -41,10 +40,9 @@ func run() {
 	fmt.Fprintln(basicTxt, "PAUSE")
 	
 	body.Init(cols, colWidth)
-	food.Init(colWidth)
 	snakeBody := body.Create(0, 0, 0, bodyColor)
-	snakeFood := food.Create(rand.Intn(cols), rand.Intn(cols), foodColor)
-	snakeField := field.Create(width, cols, colWidth, lineColor)
+	snakeFood := createFood(rand.Intn(cols), rand.Intn(cols), foodColor)
+	snakeField := createField(width, cols, colWidth, lineColor)
 
 	timer := timerConstant
 	for !win.Closed() {
@@ -88,7 +86,7 @@ func run() {
 			snakeFood.Imd.Draw(win)
 			snakeBody.Imd.Draw(win)
 			snakeField.Imd.Draw(win)
-			basicTxt.Draw(win, pixel.IM.Scaled(basicTxt.Orig, 9))
+			basicTxt.Draw(win, pixel.IM.Scaled(basicTxt.Orig, math.Floor(width/100)))
 			for !win.JustPressed(pixelgl.KeyP) && !win.Closed() {
 				win.Update()
 			}

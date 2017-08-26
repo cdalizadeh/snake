@@ -3,7 +3,6 @@ package body
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
-	"github.com/cdalizadeh/snake/cell"
 	"math"
 )
 
@@ -11,8 +10,8 @@ var colWidth float64
 var cols int
 
 type Body struct {
-    s []cell.Cell
-	head cell.Cell
+    s []Cell
+	head Cell
 	direction int
 	nextDir int
 	Imd *imdraw.IMDraw
@@ -42,13 +41,13 @@ func (b *Body) ChangePos(){
 		b.s = b.s[1:]
 	}
 	if b.direction == 0 {
-		b.head = cell.Create(b.head.Xpos + 1, b.head.Ypos)
+		b.head = createCell(b.head.Xpos + 1, b.head.Ypos)
 	} else if b.direction == 1 {
-		b.head = cell.Create(b.head.Xpos, b.head.Ypos + 1)
+		b.head = createCell(b.head.Xpos, b.head.Ypos + 1)
 	} else if b.direction == 2 {
-		b.head = cell.Create(b.head.Xpos - 1, b.head.Ypos)
+		b.head = createCell(b.head.Xpos - 1, b.head.Ypos)
 	} else if b.direction == 3 {
-		b.head = cell.Create(b.head.Xpos, b.head.Ypos - 1)
+		b.head = createCell(b.head.Xpos, b.head.Ypos - 1)
 	}
 	b.s = append(b.s, b.head)
 }
@@ -108,14 +107,14 @@ func Init(numCols int, width float64) {
 
 func Create(x int, y int, dir int, color pixel.RGBA) Body {
 	b := Body{}
-	b.s = make([]cell.Cell, 1, cols * cols)
+	b.s = make([]Cell, 1, cols * cols)
 	b.Imd = imdraw.New(nil)
 	b.direction = 0
 	b.nextDir = 0
 	b.addCell = false
 	b.color = color
-	cell.Init(colWidth, b.Imd)
-	b.s[0] = cell.Create(0, 0)
+	initCell(colWidth, b.Imd)
+	b.s[0] = createCell(0, 0)
 	b.head = b.s[0]
 	b.Draw()
 	return b

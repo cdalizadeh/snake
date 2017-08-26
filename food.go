@@ -1,11 +1,9 @@
-package food
+package main
 
 import (
 	"github.com/faiface/pixel/imdraw"
     "github.com/faiface/pixel"
 )
-
-var colWidth float64
 
 type Food struct {
     Xpos int
@@ -28,11 +26,7 @@ func (f *Food) Set(x int, y int) {
 	f.Draw()
 }
 
-func Init(wid float64) {
-    colWidth = wid
-}
-
-func Create(Xpos int, Ypos int, color pixel.RGBA) Food{
+func createFood(Xpos int, Ypos int, color pixel.RGBA) Food{
     f := Food{}
     f.Xpos = Xpos
     f.Ypos = Ypos
