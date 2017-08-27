@@ -5,7 +5,6 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/font/basicfont"
-	"github.com/cdalizadeh/snake/body"
 	"math"
 	"math/rand"
 	"fmt"
@@ -39,8 +38,7 @@ func run() {
 	basicTxt := text.New(pixel.V(100, width / 2), basicAtlas)
 	fmt.Fprintln(basicTxt, "PAUSE")
 	
-	body.Init(cols, colWidth)
-	snakeBody := body.Create(0, 0, 0, bodyColor)
+	snakeBody := createBody(0, 0, 0, bodyColor)
 	snakeFood := createFood(rand.Intn(cols), rand.Intn(cols), foodColor)
 	snakeField := createField(width, cols, colWidth, lineColor)
 
