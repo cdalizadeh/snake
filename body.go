@@ -94,7 +94,7 @@ func (b *Body) IsWithinBody(x int, y int) bool{
 }
 
 func kill(){
-	panic(6)
+	gameover = true
 }
 
 func createBody(x int, y int, dir int, color pixel.RGBA) Body {
